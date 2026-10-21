@@ -1,102 +1,76 @@
-# student-performance-prediction
-A Python-based data science and machine learning project for analyzing student academic performance and predicting academic risk using attendance, assessment results, previous performance, and learning engagement data.
-
 # Student Academic Performance Prediction & Early-Warning System
 
-## Week 1 — Data Science Project Planning and Strategy Design
+A Week 1–4 educational data-science project that demonstrates project planning, data validation, exploratory data analysis, leakage-aware preprocessing, baseline/model comparison, evaluation, and presentation planning.
 
-This repository contains the Week 1 deliverables for a hypothetical Python-based data science project that aims to identify students who may be academically at risk before the end of an academic term.
+> **Important limitation:** The included CSV is synthetic and generated for demonstration. It is not real student data and model scores are not evidence of performance in a real institution. Do not use this prototype to make decisions about real students.
 
-> **Important:** Week 1 is a planning task. No real student dataset is used. The project is intentionally designed so that the technical implementation can be added in later weeks.
+## Completed deliverables
 
-## Problem
+- **Week 1:** Project plan, strategy diagrams, objectives, data schema, success criteria and 32-hour work plan (original artifacts retained).
+- **Week 2:** Synthetic demo dataset, schema validation, EDA figures, data-quality and cleaning report.
+- **Week 3:** Preprocessing pipeline, leakage-aware split, baseline + Logistic Regression + Random Forest + Gradient Boosting, metrics output and evaluation notes.
+- **Week 4:** Comprehensive report, presentation outline, visualization plan, recommendations, risks and responsible-use safeguards.
 
-Can academic risk be identified early enough to support appropriate academic intervention using attendance, assessment performance, previous academic performance, assignment behavior, and learning engagement indicators?
+## Quick start
 
-## Objectives
+Use Python 3.10+ in a virtual environment.
 
-1. Define the data science problem and measurable success criteria.
-2. Design the required data structure and collection strategy.
-3. Plan data validation, cleaning, and preprocessing.
-4. Define an exploratory data analysis strategy.
-5. Design leakage-safe feature engineering.
-6. Compare baseline and candidate machine-learning models.
-7. Define evaluation metrics appropriate for an early-warning problem.
-8. Establish reproducibility, privacy, fairness, and governance practices.
-
-## Planned Technology
-
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Seaborn
-- SciPy
-- Scikit-learn
-- Jupyter Notebook
-- VS Code
-- Git / GitHub
-
-## Planned ML Strategy
-
-- Majority-class baseline
-- Logistic Regression
-- Decision Tree
-- Random Forest
-- Gradient Boosting
-
-Primary evaluation measures:
-
-- Recall
-- Precision
-- F1-score
-- ROC-AUC
-- PR-AUC
-- Confusion matrix
-- Calibration
-
-## Repository Structure
-
-```text
-student-performance-prediction-week1/
-├── data/
-│   ├── raw/
-│   └── processed/
-├── figures/
-├── notebooks/
-├── reports/
-├── src/
-│   ├── data/
-│   ├── features/
-│   ├── models/
-│   └── evaluation/
-├── tests/
-├── requirements.txt
-└── README.md
+```bash
+python -m venv .venv
+# Windows PowerShell:
+.venv\\Scripts\\Activate.ps1
+# macOS/Linux:
+source .venv/bin/activate
+pip install -r requirements.txt
+python -m src.data.load_data
+python -m src.models.train_model
+python -m src.evaluation.evaluate
+pytest -q
 ```
 
-## Week 1 Effort
+The training command writes `reports/model_metrics.json`. Review the synthetic-data warning in that file before using the numbers in a presentation.
 
-Total planned effort: **32 hours**
+## Repository structure
 
-| Work Package | Hours |
-|---|---:|
-| Problem definition & requirements | 3 |
-| Data source & collection planning | 4 |
-| Data cleaning & quality strategy | 5 |
-| EDA planning | 5 |
-| Feature engineering | 4 |
-| Model strategy | 4 |
-| Evaluation & error analysis | 3 |
-| Reporting & diagrams | 4 |
-| **Total** | **32** |
+```text
+student-performance-prediction-main/
+├── data/raw/                 # Synthetic demo CSV + data notice
+├── data/processed/           # Generated/processed outputs (not committed by default)
+├── figures/                  # Week 1 diagrams and Week 2 EDA plots
+├── notebooks/                # Space for optional notebooks
+├── reports/                  # Week 1–4 reports and presentation outline
+├── src/data/                 # Dataset loading and schema validation
+├── src/features/             # Preprocessing pipeline
+├── src/models/                # Training and comparison
+├── src/evaluation/            # Metrics reader
+├── tests/                     # Basic data validation test
+└── requirements.txt
+```
 
-## Responsible Data Science
+## Data dictionary
 
-The proposed system is intended to provide probabilistic support signals, not automatic high-impact decisions. Future implementation should use data minimization, appropriate access controls, de-identification where possible, leakage prevention, subgroup evaluation, and human review.
+| Field | Meaning | Expected range / use |
+|---|---|---|
+| `student_id` | Synthetic record ID | Unique; excluded from model features |
+| `previous_gpa` | Previous GPA | 0–10 |
+| `attendance_percentage` | Attendance percentage | 0–100 |
+| `quiz_average` | Average quiz score | 0–100 |
+| `assignment_average` | Average assignment score | 0–100 |
+| `midterm_score` | Midterm score | 0–100 |
+| `assignment_submission_rate` | Assignment submission rate | 0–100 |
+| `lms_activity` | Illustrative LMS activity index | Non-negative, synthetic scale |
+| `study_hours` | Illustrative study hours | Non-negative |
+| `assessment_trend` | Illustrative assessment trend score | 0–100 |
+| `at_risk` | Synthetic binary target | 0 = not flagged, 1 = flagged |
 
-## Current Status
+## Methodology and safeguards
 
-**Completed: Week 1 — Project Planning and Strategy Design**
+- Split data before fitting preprocessing; fit imputation/scaling only on training data through a pipeline.
+- Exclude identifiers and all information that would not be available at the prediction cutoff.
+- Compare models using precision, recall, F1, ROC-AUC, PR-AUC and confusion matrix—not accuracy alone.
+- For real data, use appropriate authorization, data minimization, de-identification, access control, time-based validation, subgroup error checks and human review.
+- Model associations are not causal explanations. The prototype must only be used for learning and demonstration.
 
-Future work can implement the pipeline using a suitable de-identified or synthetic dataset.
+## Week-by-week reports
+
+See the four `.docx` reports in `reports/` and `reports/presentation_outline.md`.
